@@ -20,11 +20,12 @@ public class PlayerMove : MonoBehaviour
     //y방향 속력
     float yVelocity;
 
-
     void Start()
     {
         //characterController 를 담자
         cc = GetComponent<CharacterController>();
+        //현재체력을 최대체력으로 셋팅
+        currHp = maxHp;
     }
 
     void Update()
@@ -61,5 +62,23 @@ public class PlayerMove : MonoBehaviour
         //3. 그 방향으로 움직이자.
         //P = P0 + vt
         cc.Move(dir * moveSpeed * Time.deltaTime);
+    }
+
+
+    //현재 체력
+    public int maxHp = 10;
+    public int currHp;
+    //피격되었을 때 호출되는 함수
+    public void OnDamaged()
+    {
+        //1. 현재 체력 1 줄여주고
+        currHp--;
+        print("현재체력 : " + currHp);
+        //2. 만약에 현재 체력이 0보다 같거나 작아지면
+        if(currHp <= 0)
+        {
+            //3. 나를 파괴한다.
+            Destroy(gameObject);
+        }
     }
 }

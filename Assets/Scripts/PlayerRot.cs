@@ -17,7 +17,6 @@ public class PlayerRot : MonoBehaviour
     float rotX;
     float rotY;
 
-    public GameObject go;
     void Start()
     {
         
