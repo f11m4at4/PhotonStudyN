@@ -1,12 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Photon.Pun;
 
 
 //단, CharacterController를 사용
 
-public class PlayerMove : MonoBehaviour
+public class PlayerMove : MonoBehaviourPun
 {
     //속력
     public float moveSpeed = 5;
@@ -20,8 +20,9 @@ public class PlayerMove : MonoBehaviour
     //y방향 속력
     float yVelocity;
 
+
     void Start()
-    {
+    {        
         //characterController 를 담자
         cc = GetComponent<CharacterController>();
         //현재체력을 최대체력으로 셋팅
@@ -30,6 +31,9 @@ public class PlayerMove : MonoBehaviour
 
     void Update()
     {
+        //만약에 내것이 아니라면 함수를 나가겠다.
+        if (photonView.IsMine == false) return;
+
         // WSAD를 누르면 상,하,좌,우로 이동
         //1. WSAD의 신호를 받자.
         float h = Input.GetAxisRaw("Horizontal"); //A : -1, D : 1, 누르지 않으면 : 0

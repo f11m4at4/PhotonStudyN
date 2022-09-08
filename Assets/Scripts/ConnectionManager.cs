@@ -37,7 +37,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         print(System.Reflection.MethodBase.GetCurrentMethod().Name);
 
         //LobbyScene으로 이동
-        SceneManager.LoadScene("LobbyScene");
+        PhotonNetwork.LoadLevel("LobbyScene");
     }
 
 

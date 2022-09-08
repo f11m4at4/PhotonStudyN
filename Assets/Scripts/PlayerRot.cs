@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 //마우스의 움직임에 따라서 
 //좌우 회전은 플레이어를!
 //상하 회전은 CamPos를!
-public class PlayerRot : MonoBehaviour
+public class PlayerRot : MonoBehaviourPun
 {
     // 회전 속력 
     public float rotSpeed = 200;
@@ -19,11 +20,19 @@ public class PlayerRot : MonoBehaviour
 
     void Start()
     {
-        
+        //만약에 내것이라면
+        if(photonView.IsMine == true)
+        {
+            //camPos를 활성화 한다.
+            camPos.gameObject.SetActive(true);
+        }
     }
 
     void Update()
-    {        
+    {
+        //만약에 내것이 아니라면 함수를 나간다.
+        if (photonView.IsMine == false) return;
+
         //1. 마우스의 움직임을 받는다.
         float mx = Input.GetAxis("Mouse X");
         float my = Input.GetAxis("Mouse Y");
