@@ -26,6 +26,8 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         base.OnConnectedToMaster();
         print(System.Reflection.MethodBase.GetCurrentMethod().Name);
 
+        //내 닉네임 설정
+        PhotonNetwork.NickName = "김현진_" + Random.Range(1, 1000);
         //로비 진입 요청
         PhotonNetwork.JoinLobby();
     }
