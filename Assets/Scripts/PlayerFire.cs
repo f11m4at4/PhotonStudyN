@@ -14,9 +14,12 @@ public class PlayerFire : MonoBehaviourPun
     //총구
     public Transform firePos;
 
+    //총소리
+    public AudioSource bulletSound;
+
     void Start()
     {
-        
+        bulletSound = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -60,10 +63,24 @@ public class PlayerFire : MonoBehaviourPun
                 pm.OnDamaged();
             }
 
-            // 서버에 RpcShowBulletImpact 함수 실행 요청
             photonView.RPC("RpcShowBulletImpact", RpcTarget.All, hit.point, hit.normal);
         }
+        else
+        {
+            //총소리 -> 동기화
+            photonView.RPC("RpcBulletSound", RpcTarget.All);            
+        }
+
+        //총쏘는 애니메이션
+        photonView.RPC("RpcSetTrigger", RpcTarget.All, "Fire");
     }
+
+    [PunRPC]
+    void RpcBulletSound()
+    {
+        bulletSound.PlayOneShot(bulletSound.clip);
+    }
+
 
     [PunRPC]
     void RpcShowBulletImpact(Vector3 point, Vector3 normal)
@@ -76,5 +93,8 @@ public class PlayerFire : MonoBehaviourPun
         bulletImapct.transform.forward = normal;
         //7. 2초뒤에 파괴한다.
         Destroy(bulletImapct, 2);
+
+
     }
+    
 }

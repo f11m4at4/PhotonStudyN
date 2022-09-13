@@ -27,7 +27,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         roomOptions.IsVisible = true;
 
         // 방 생성 요청 (해당 옵션을 이용해서)
-        PhotonNetwork.CreateRoom("XR_B반", roomOptions);
+        PhotonNetwork.CreateRoom("XR_A반", roomOptions);
     }
 
     //방이 생성되면 호출 되는 함수
@@ -48,7 +48,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     //방 참가 요청
     public void JoinRoom()
     {
-        PhotonNetwork.JoinRoom("XR_B반");
+        PhotonNetwork.JoinRoom("XR_A반");
     }
 
     //방 참가가 완료 되었을 때 호출 되는 함수
