@@ -15,6 +15,14 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public Button btnJoin;
     //방 생성 Button
     public Button btnCreate;
+
+    //방 목록 Content
+    public Transform roomListContent;
+
+    //방들의 정보
+    Dictionary<string, RoomInfo> roomCache = new Dictionary<string, RoomInfo>();
+
+
     void Start()
     {
         //inputRoomName 값이 변할때마다 호출되는 함수 등록
@@ -87,6 +95,65 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     {
         base.OnJoinRoomFailed(returnCode, message);
         print("OnJoinRoomFailed, " + returnCode + ", " + message);
+    }
+
+    //방 목록이 변경되었을 때 (생성, 삭제, 정보갱신) 호출 해주는 함수
+    public override void OnRoomListUpdate(List<RoomInfo> roomList)
+    {
+        base.OnRoomListUpdate(roomList);
+
+        //룸리스트 UI 삭제
+        RemoveRoomListUI();
+        //룸리스트 정보 갱신
+        UpdateRoomCache(roomList);
+        //룸리스트 UI 생성
+        CreateRoomListUI();
+    }
+
+    void RemoveRoomListUI()
+    {
+        foreach (Transform tr in roomListContent)
+        {
+            Destroy(tr.gameObject);
+        }
+
+        //Button[] tr = roomListContent.GetComponentsInChildren<Button>();
+        //for (int i = 0; i < tr.Length; i++)
+        //    Destroy(tr[i].gameObject);
+    }
+
+    void UpdateRoomCache(List<RoomInfo> roomList)
+    {
+        foreach(RoomInfo info in roomList)
+        {
+            //만약에 roomCache에 info.Name에 해당되는 키값이 있다면
+            if(roomCache.ContainsKey(info.Name))
+            {
+                //만약에 해당 룸이 삭제되는 것이라면
+                if(info.RemovedFromList)
+                {
+                    //roomCache 에서 삭제
+                    roomCache.Remove(info.Name);
+                }
+                //그렇지 않다면
+                else
+                {
+                    //정보갱신
+                    roomCache[info.Name] = info;
+                }
+            }
+            //그렇지 않다면
+            else
+            {
+                //roomCache 에 추가
+                roomCache[info.Name] = info;
+            }
+        }
+    }
+
+    void CreateRoomListUI()
+    {
+
     }
 
 }
