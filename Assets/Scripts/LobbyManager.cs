@@ -21,7 +21,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     //방들의 정보
     Dictionary<string, RoomInfo> roomCache = new Dictionary<string, RoomInfo>();
-
+    //방정보 아이템 Prefab
+    public GameObject roomItemFactory;
 
     void Start()
     {
@@ -153,7 +154,25 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     void CreateRoomListUI()
     {
+        foreach(RoomInfo info in roomCache.Values)
+        {
+            //방정보 아이템 만들고
+            GameObject go = Instantiate(roomItemFactory, roomListContent);
 
+            //아이템 정보 셋팅
+            RoomItem roomItem = go.GetComponent<RoomItem>();
+            roomItem.SetInfo(info.Name, info.PlayerCount, info.MaxPlayers);
+            roomItem.onClickAction = SelectRoom;
+
+            //람다식
+            //roomItem.onClickAction = (string room) => {
+            //    inputRoomName.text = room;
+            //};
+        }
     }
 
+    void SelectRoom(string room)
+    {
+        inputRoomName.text = room;
+    }
 }
