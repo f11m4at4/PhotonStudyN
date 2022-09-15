@@ -3,15 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using Photon.Realtime;
 
 public class RoomItem : MonoBehaviour
 {
     //방정보 Text
     public Text roomInfo;
-    //클릭 되었을 때 호출되야 하는 함수를 담을 변수
-    public Action<string> onClickAction;
+    //방설명 Text
+    public Text roomDescription;
 
-    
+    //클릭 되었을 때 호출되야 하는 함수를 담을 변수
+    public Action<string, int> onClickAction;
+
+    //map Id
+    int mapId;
+
     void Start()
     {
     }
@@ -29,13 +35,26 @@ public class RoomItem : MonoBehaviour
         roomInfo.text = roomName + " (" + currPlayer + " / " + maxPlayer + ")";
     }
 
+    public void SetInfo(RoomInfo info)
+    {
+        SetInfo(info.Name, info.PlayerCount, info.MaxPlayers);
+
+        //방 설명 셋팅
+        roomDescription.text = (string)info.CustomProperties["description"];
+
+        //맵 id 셋팅
+        mapId = (int)info.CustomProperties["mapId"];
+    }
+
+
+
     public void OnClick()
     {
         //만약에 onClickAction이 null이 아니라면
         if(onClickAction != null)
         {
             //onClickAction 에 들어있는 함수를 호출
-            onClickAction(name);
+            onClickAction(name, mapId);
         }
 
         ////InputRoomName 에 roomName을 전달해서 셋팅

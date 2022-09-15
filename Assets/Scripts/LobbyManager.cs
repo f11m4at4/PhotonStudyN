@@ -23,6 +23,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     Dictionary<string, RoomInfo> roomCache = new Dictionary<string, RoomInfo>();
     //방정보 아이템 Prefab
     public GameObject roomItemFactory;
+    //맵 Thumbnail 들
+    public GameObject[] mapThums;
 
     void Start()
     {
@@ -58,6 +60,13 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         roomOptions.MaxPlayers = byte.Parse(inputMaxPlayer.text);
         // 룸 리스트에 보이지 않게? 보이게?
         roomOptions.IsVisible = true;
+        // Custom 룸 정보를 설정
+        ExitGames.Client.Photon.Hashtable hash = new ExitGames.Client.Photon.Hashtable();
+        hash["description"] = "안녕? 여기는 초보방이야" + Random.Range(1, 1000);
+        hash["mapId"] = Random.Range(0, mapThums.Length);
+        roomOptions.CustomRoomProperties = hash;
+        // Custom 정보 키값을 보이게 하겠다.
+        roomOptions.CustomRoomPropertiesForLobby = new string[] { "description", "mapId" };
 
         // 방 생성 요청 (해당 옵션을 이용해서)
         PhotonNetwork.CreateRoom(inputRoomName.text, roomOptions);
@@ -161,8 +170,13 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
             //아이템 정보 셋팅
             RoomItem roomItem = go.GetComponent<RoomItem>();
-            roomItem.SetInfo(info.Name, info.PlayerCount, info.MaxPlayers);
+            roomItem.SetInfo(info);
             roomItem.onClickAction = SelectRoom;
+
+            //Custom 정보 셋팅
+            string des = (string)info.CustomProperties["description"];
+            int mapId = (int)info.CustomProperties["mapId"];
+            print(des + ", " + mapId);
 
             //람다식
             //roomItem.onClickAction = (string room) => {
@@ -171,8 +185,22 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         }
     }
 
-    void SelectRoom(string room)
+    int prevMapId = -1;
+    void SelectRoom(string room, int mapId)
     {
+        //방이름 셋팅
         inputRoomName.text = room;
+
+        //만약에 이전에 선택한 맵이 있다면
+        if(prevMapId > -1)
+        {
+            //해당 맵을 비활성화
+            mapThums[prevMapId].SetActive(false);
+        }
+
+        //맵 thumbnail 셋팅
+        mapThums[mapId].SetActive(true);
+        //prevMapId <- mapId 셋팅
+        prevMapId = mapId;
     }
 }
