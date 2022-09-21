@@ -16,7 +16,7 @@ MonoBehaviour:
     AppIdRealtime: d9e45beb-af8f-4750-98f0-17132d5f219b
     AppIdFusion: 
     AppIdChat: 
-    AppIdVoice: 
+    AppIdVoice: 90c594ee-b148-448b-ad4b-cb85c70d3524
     AppVersion: 1
     UseNameServer: 1
     FixedRegion: kr
@@ -47,6 +47,9 @@ MonoBehaviour:
   - SetMyTurn
   - RequestChangeTurn
   - RpcAddChat
+  - CantHearYou
+  - ChangeColour
+  - HeresWhy
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

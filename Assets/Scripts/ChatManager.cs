@@ -94,6 +94,7 @@ public class ChatManager : MonoBehaviourPun
 
         //4. 이전에 바닥에 닿아있었다면
         StartCoroutine(AutoScrollBottom());
+        
     }
 
     IEnumerator AutoScrollBottom()
