@@ -12,7 +12,7 @@ public class ChatManager : MonoBehaviourPun
     //InputChat 
     public InputField inputChat;
     //ScrollView의 Content transform
-    public Transform trContent;
+    public RectTransform trContent;
 
     //나의 닉네임 색깔
     Color nickColor;
@@ -73,17 +73,41 @@ public class ChatManager : MonoBehaviourPun
         inputChat.ActivateInputField();
     }
 
+
+    public RectTransform rtScrollView;
+    float prevContentH;
+
     [PunRPC]
     void RpcAddChat(string chat)
     {
+        //이전 content의 H값을 저장하자
+        prevContentH = trContent.sizeDelta.y;
+
         //2.ChatItem을 하나 만든다. 
         //(부모를 ScrollView - Content)
         GameObject item = Instantiate(chatItemFactory, trContent);
 
         //3.text 컴포넌트 가져와서 inputField의
         //내용을 셋팅
-        Text t = item.GetComponent<Text>();
-        t.text = chat;     
+        ChatItem chatItem = item.GetComponent<ChatItem>();
+        chatItem.SetText(chat);
+
+        //4. 이전에 바닥에 닿아있었다면
+        StartCoroutine(AutoScrollBottom());
     }
 
+    IEnumerator AutoScrollBottom()
+    {
+        yield return null;
+        //스크롤뷰 H보다 Content H값이 클 때만(스크롤이 가능한 상태라면)
+        if(trContent.sizeDelta.y > rtScrollView.sizeDelta.y)
+        {            
+            //(content y  >= 변경되기전 content H - 스크롤뷰 H)
+            if (trContent.anchoredPosition.y >= prevContentH - rtScrollView.sizeDelta.y)
+            {
+                //5. 추가된 높이만큼 content y값을 변경하겠다.
+                trContent.anchoredPosition = new Vector2(0, trContent.sizeDelta.y - rtScrollView.sizeDelta.y);
+            }
+        }
+    }
 }

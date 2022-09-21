@@ -581,6 +581,7 @@ MonoBehaviour:
   chatItemFactory: {fileID: 7615626875906248610, guid: e36651287759e2247974d85a26e7879b, type: 3}
   inputChat: {fileID: 1908944838}
   trContent: {fileID: 260735529}
+  rtScrollView: {fileID: 1036454628}
 --- !u!4 &739119644
 Transform:
   m_ObjectHideFlags: 0
