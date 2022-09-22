@@ -31,6 +31,11 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         inputRoomName.onValueChanged.AddListener(OnRoomNameValueChanged);
         // 총인원(InputField)이 변경될때 호출되는 함수 등록
         inputMaxPlayer.onValueChanged.AddListener(OnMaxPlayerValueChanged);
+
+
+        string[] s = Microphone.devices;
+
+
     }
 
     public void OnRoomNameValueChanged(string s)

@@ -42,7 +42,8 @@ public class GameManager : MonoBehaviourPunCallbacks
         //현재 방에 들어와있는 인원수를 이용해서 idx 구하자
         int idx = PhotonNetwork.CurrentRoom.PlayerCount - 1;
         //플레이어를 생성한다.
-        PhotonNetwork.Instantiate("Player", spawnPos[idx], Quaternion.identity);
+        //PhotonNetwork.Instantiate("Player", spawnPos[idx], Quaternion.identity);
+        PhotonNetwork.Instantiate("Plane", Vector3.zero, Quaternion.identity);
     }
 
     void Update()
